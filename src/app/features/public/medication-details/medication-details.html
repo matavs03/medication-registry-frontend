@@ -1,0 +1,37 @@
+<dl class="details">
+  <dt>Šifra proizvoda</dt>
+  <dd>{{ medication().id }}</dd>
+
+  <dt>Naziv</dt>
+  <dd>{{ medication().name }}</dd>
+
+  <dt>INN</dt>
+  <dd>{{ medication().inn ?? '—' }}</dd>
+
+  <dt>Oblik i doza</dt>
+  <dd>{{ medication().dosageForm ?? '—' }}</dd>
+
+  <dt>Proizvođač</dt>
+  <dd>{{ medication().manufacturer ?? '—' }}</dd>
+
+  <dt>ATC šifra</dt>
+  <dd>{{ medication().atc ?? '—' }}</dd>
+
+  <dt>Vrsta leka</dt>
+  <dd>{{ medication().type ?? '—' }}</dd>
+
+  <dt>Režim izdavanja</dt>
+  <dd>{{ medication().prescriptionMode ?? '—' }}</dd>
+
+  <dt>Rešenje važi do</dt>
+  <dd>{{ medication().licenseValidUntil ? (medication().licenseValidUntil | date:'dd.MM.yyyy.') : '—' }}</dd>
+
+  <dt>Status</dt>
+  <dd>
+    @if (medication().status === 'ACTIVE') {
+      <span class="badge badge-active">Aktivan</span>
+    } @else {
+      <span class="badge badge-withdrawn">Povučen</span>
+    }
+  </dd>
+</dl>

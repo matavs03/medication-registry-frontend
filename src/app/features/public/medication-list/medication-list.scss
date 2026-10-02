@@ -3,9 +3,21 @@
   padding: 20px 30px;
 }
 
-.search-bar {
+.filters {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
-  max-width: 500px;
+  align-items: center;
+
+  .input {
+    width: auto;
+    flex: 1 1 180px;
+    max-width: 260px;
+  }
+
+  .select {
+    width: auto;
+    flex: 0 0 160px;
+  }
 }

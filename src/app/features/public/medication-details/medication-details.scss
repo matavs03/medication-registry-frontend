@@ -1,0 +1,15 @@
+.details {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 10px 20px;
+  margin: 0;
+
+  dt {
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  dd {
+    margin: 0;
+  }
+}

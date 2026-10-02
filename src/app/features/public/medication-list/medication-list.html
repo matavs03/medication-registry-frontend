@@ -1,16 +1,36 @@
 <h2>Registar lekova</h2>
 
-<div class="search-bar">
-  <input class="input" type="text" [(ngModel)]="searchName"
-         placeholder="Pretraga po nazivu leka" (keyup.enter)="search()" />
+<div class="filters">
+  <input class="input" type="text" [(ngModel)]="criteria.name"
+         placeholder="Naziv leka" (keyup.enter)="search()" />
+
+  <input class="input" type="text" [(ngModel)]="criteria.inn"
+         placeholder="INN (aktivna supstanca)" (keyup.enter)="search()" />
+
+  <input class="input" type="text" [(ngModel)]="criteria.atc"
+         placeholder="ATC šifra" (keyup.enter)="search()" />
+
+  <select class="select" [(ngModel)]="criteria.status">
+    <option value="">Svi statusi</option>
+    <option value="ACTIVE">Aktivni</option>
+    <option value="WITHDRAWN">Povučeni</option>
+  </select>
+
   <button class="btn" (click)="search()">Pretraži</button>
+  <button class="btn btn-ghost" (click)="reset()">Poništi</button>
 </div>
 
 @if (loading()) {
   <p class="muted">Učitavanje...</p>
 } @else {
-  <app-medication-table [medications]="medications()" />
+  <app-medication-table [medications]="medications()" (rowClick)="openDetails($event)" />
 
   <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
                   (pageChange)="onPageChange($event)" />
+
+  @if (selectedMedication(); as medication) {
+    <app-modal [title]="medication.name" (closed)="closeDetails()">
+      <app-medication-details [medication]="medication" />
+    </app-modal>
+  }
 }
