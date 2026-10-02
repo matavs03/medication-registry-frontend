@@ -1,1 +1,11 @@
-<p>pagination works!</p>
+@if (totalPages() > 1) {
+  <div class="pagination">
+    <button class="btn" (click)="previous()" [disabled]="currentPage() === 0">
+      Prethodna
+    </button>
+    <span>Strana {{ currentPage() + 1 }} od {{ totalPages() }}</span>
+    <button class="btn" (click)="next()" [disabled]="currentPage() >= totalPages() - 1">
+      Sledeća
+    </button>
+  </div>
+}

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+import { MedicationShortView } from '../../../core/models/medication';
 
 @Component({
   imports: [],
@@ -6,4 +7,14 @@ import { Component } from '@angular/core';
   styleUrl: './medication-table.scss',
   templateUrl: './medication-table.html',
 })
-export class MedicationTable {}
+export class MedicationTable {
+  medications = input.required<MedicationShortView[]>();
+  selectable = input(false);
+  selectedIds = input<string[]>([]);
+
+  rowClick = output<MedicationShortView>();
+
+  isSelected(medication: MedicationShortView): boolean {
+    return this.selectedIds().includes(medication.id);
+  }
+}

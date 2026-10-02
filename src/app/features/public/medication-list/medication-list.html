@@ -1,1 +1,16 @@
-<p>medication-list works!</p>
+<h2>Registar lekova</h2>
+
+<div class="search-bar">
+  <input class="input" type="text" [(ngModel)]="searchName"
+         placeholder="Pretraga po nazivu leka" (keyup.enter)="search()" />
+  <button class="btn" (click)="search()">Pretraži</button>
+</div>
+
+@if (loading()) {
+  <p class="muted">Učitavanje...</p>
+} @else {
+  <app-medication-table [medications]="medications()" />
+
+  <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
+                  (pageChange)="onPageChange($event)" />
+}
