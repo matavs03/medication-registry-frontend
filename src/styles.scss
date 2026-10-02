@@ -1,1 +1,200 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --color-primary: #4a90e2;
+  --color-primary-dark: #357abd;
+  --color-success: #4caf50;
+  --color-danger: #dc3545;
+
+  --color-bg: #f9f9f9;
+  --color-surface: #ffffff;
+  --color-row-alt: #f4f6f8;
+  --color-row-hover: #e1f0ff;
+
+  --color-text: #333333;
+  --color-text-muted: #888888;
+  --color-border: #eeeeee;
+
+  --radius: 8px;
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  --shadow-strong: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+h1, h2, h3 {
+  color: var(--color-primary);
+  margin: 0 0 12px;
+}
+
+h2 { font-size: 2em; }
+h3 { font-size: 1.4em; }
+
+/* --- tabela --- */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  overflow: hidden;
+
+  th {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+    color: #fff;
+    text-align: left;
+    padding: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85em;
+  }
+
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  tbody tr:nth-child(even) {
+    background: var(--color-row-alt);
+  }
+
+  tbody tr:hover td {
+    background: var(--color-row-hover);
+  }
+
+  tbody tr.selected td {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  &.selectable tbody tr {
+    cursor: pointer;
+  }
+}
+
+/* --- dugmici --- */
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-primary);
+  color: #fff;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) { background: var(--color-primary-dark); }
+  &:disabled { background: #a0a0a0; cursor: not-allowed; }
+
+  &.btn-success { background: var(--color-success); }
+  &.btn-success:hover:not(:disabled) { background: #45a049; }
+
+  &.btn-danger { background: var(--color-danger); }
+  &.btn-danger:hover:not(:disabled) { background: #c82333; }
+
+  &.btn-ghost {
+    background: #e4e4e4;
+    color: var(--color-text);
+  }
+  &.btn-ghost:hover:not(:disabled) { background: #d2d2d2; }
+}
+
+/* --- polja --- */
+
+.input, .textarea, .select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--color-surface);
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+}
+
+.textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* --- oznake statusa --- */
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+
+  &.badge-active { background: #e3f5e8; color: #2e7d32; }
+  &.badge-withdrawn { background: #fde8e8; color: #c62828; }
+}
+
+/* --- paginacija --- */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--color-text-muted);
+}
+
+/* --- modal --- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal {
+  background: var(--color-surface);
+  padding: 28px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-strong);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* --- sitnice --- */
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 40px 0;
+}
