@@ -1,0 +1,36 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 0 30px;
+  height: 60px;
+  background: var(--color-surface);
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: var(--shadow);
+}
+
+.brand {
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 1.1em;
+}
+
+.links {
+  display: flex;
+  gap: 24px;
+
+  a {
+    text-decoration: none;
+    color: var(--color-text);
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+
+    &:hover { color: var(--color-primary); }
+
+    &.active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+      font-weight: 600;
+    }
+  }
+}
