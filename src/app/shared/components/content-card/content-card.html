@@ -1,0 +1,11 @@
+<article class="card" (click)="cardClick.emit()">
+  <h4 class="card-title">{{ title() }}</h4>
+
+  <div class="card-footer">
+    <span class="muted">{{ createdAt() | date:'dd.MM.yyyy.' }}</span>
+
+    @if (fileCount() !== null) {
+      <span class="file-count">{{ fileCount() }} {{ fileCount() === 1 ? 'fajl' : 'fajlova' }}</span>
+    }
+  </div>
+</article>

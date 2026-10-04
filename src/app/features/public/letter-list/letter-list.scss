@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  padding: 20px 30px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+
+  .input {
+    width: auto;
+    flex: 1 1 200px;
+    max-width: 280px;
+  }
+}
+
+.description {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.medication-list {
+  padding-left: 20px;
+  line-height: 1.8;
+}

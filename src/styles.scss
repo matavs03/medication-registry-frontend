@@ -198,3 +198,9 @@ h3 { font-size: 1.4em; }
   color: var(--color-text-muted);
   padding: 40px 0;
 }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
