@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  padding: 20px 30px 100px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin: 16px 0;
+
+  .input { width: auto; flex: 0 1 240px; }
+}
+
+.selection-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+  padding: 14px 30px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: flex-end;
+  z-index: 100;
+}
+
+.medication-list, .file-list {
+  padding-left: 20px;
+  line-height: 1.8;
+}

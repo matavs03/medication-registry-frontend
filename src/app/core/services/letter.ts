@@ -4,11 +4,10 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Page } from '../models/common';
 import { MedicationFullView } from '../models/medication';
-import { LetterFullView, LetterShortView } from '../models/letter';
+import { CreateLetterRequest, LetterFullView, LetterShortView } from '../models/letter';
 
 export interface LetterSearchCriteria {
   title: string;
-  medicationId: string;
   medicationName: string;
 }
 
@@ -25,7 +24,6 @@ export class LetterService {
     let params = new HttpParams().set('page', page).set('size', size);
 
     if (criteria.title) params = params.set('title', criteria.title);
-    if (criteria.medicationId) params = params.set('medicationId', criteria.medicationId);
     if (criteria.medicationName) params = params.set('medicationName', criteria.medicationName);
 
     return this.http.get<Page<LetterShortView>>(this.baseUrl, { params });
@@ -42,6 +40,16 @@ export class LetterService {
     });
   }
 
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 
+  create(request: CreateLetterRequest, file: File): Observable<LetterFullView> {
+    const formData = new FormData();
+    formData.append('letter', new Blob([JSON.stringify(request)], { type: 'application/json' }));
+    formData.append('file', file);
+
+    return this.http.post<LetterFullView>(this.baseUrl, formData);
+  }
 }
 

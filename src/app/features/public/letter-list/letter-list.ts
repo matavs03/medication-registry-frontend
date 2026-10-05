@@ -25,7 +25,6 @@ export class LetterList {
 
   criteria: LetterSearchCriteria = {
     title: '',
-    medicationId: '',
     medicationName: ''
   };
 
@@ -52,7 +51,7 @@ export class LetterList {
   }
 
   reset() {
-    this.criteria = { title: '', medicationId: '', medicationName: '' };
+    this.criteria = { title: '', medicationName: '' };
     this.search();
   }
 

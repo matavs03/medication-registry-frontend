@@ -1,9 +1,22 @@
 <nav class="navbar">
   <span class="brand">Registar humanih lekova</span>
 
-  <div class="links">
-    <a routerLink="/medications" routerLinkActive="active">Lekovi</a>
-    <a routerLink="/letters" routerLinkActive="active">Pisma</a>
-    <a routerLink="/materials" routerLinkActive="active">Edukativni materijali</a>
-  </div>
+  @if (user(); as currentUser) {
+    <div class="links">
+      <a routerLink="/admin/dashboard" routerLinkActive="active">Sinhronizacija</a>
+      <a routerLink="/admin/letters" routerLinkActive="active">Pisma</a>
+      <a routerLink="/admin/materials" routerLinkActive="active">Materijali</a>
+    </div>
+
+    <div class="user-area">
+      <span class="muted">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
+      <button class="btn btn-ghost" (click)="logout()">Odjavi se</button>
+    </div>
+  } @else {
+    <div class="links">
+      <a routerLink="/medications" routerLinkActive="active">Lekovi</a>
+      <a routerLink="/letters" routerLinkActive="active">Pisma</a>
+      <a routerLink="/materials" routerLinkActive="active">Edukativni materijali</a>
+    </div>
+  }
 </nav>

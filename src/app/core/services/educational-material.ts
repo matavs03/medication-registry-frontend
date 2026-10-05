@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Page } from '../models/common';
 import { LetterFullView, LetterShortView } from '../models/letter';
 import {
+  CreateEducationalMaterialRequest,
   EducationalMaterialFullView,
   EducationalMaterialShortView,
 } from '../models/educational-material';
@@ -41,5 +42,20 @@ export class EducationalMaterialService {
       responseType: 'blob',
       observe: 'response',
     });
+  }
+
+  create(
+    request: CreateEducationalMaterialRequest,
+    files: File[],
+  ): Observable<EducationalMaterialFullView> {
+    const formData = new FormData();
+    formData.append('material', new Blob([JSON.stringify(request)], { type: 'application/json' }));
+    files.forEach((file) => formData.append('files', file));
+
+    return this.http.post<EducationalMaterialFullView>(this.baseUrl, formData);
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

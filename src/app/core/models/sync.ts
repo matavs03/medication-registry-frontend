@@ -5,6 +5,6 @@ export interface SyncLogView {
   syncDateTime: string;
   receivedCount: number;
   changedCount: number;
-  status: SyncStatus;
+  syncStatus: SyncStatus;
   message: string | null;
 }

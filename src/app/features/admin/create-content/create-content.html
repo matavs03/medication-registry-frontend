@@ -1,0 +1,71 @@
+<div class="header">
+  <h2>{{ kind() === 'letter' ? 'Novo pismo' : 'Novi edukativni materijal' }}</h2>
+  <button class="btn btn-ghost" (click)="cancelled.emit()">Odustani</button>
+</div>
+
+<p class="muted">Izaberite lekove na koje se odnosi, pa nastavite na unos podataka.</p>
+
+<div class="filters">
+  <input class="input" type="text" [(ngModel)]="criteria.name"
+         placeholder="Naziv leka" (keyup.enter)="search()" />
+  <input class="input" type="text" [(ngModel)]="criteria.inn"
+         placeholder="INN" (keyup.enter)="search()" />
+  <button class="btn" (click)="search()">Pretraži</button>
+</div>
+
+@if (loading()) {
+  <p class="muted">Učitavanje...</p>
+} @else {
+  <app-medication-table [medications]="medications()" [selectable]="true"
+                        [selectedIds]="selectedIds()" (rowClick)="toggle($event)" />
+
+  <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
+                  (pageChange)="onPageChange($event)" />
+}
+
+@if (selected().length > 0) {
+  <div class="selection-bar">
+    <span>Izabrano lekova: <strong>{{ selected().length }}</strong></span>
+    <button class="btn btn-ghost" (click)="clearSelection()">Poništi izbor</button>
+    <button class="btn btn-success" (click)="openForm()">Nastavi</button>
+  </div>
+}
+
+@if (formOpen()) {
+  <app-modal [title]="kind() === 'letter' ? 'Novo pismo' : 'Novi edukativni materijal'"
+             (closed)="closeForm()">
+
+    <h4>Izabrani lekovi ({{ selected().length }})</h4>
+    <ul class="medication-list">
+      @for (medication of selected(); track medication.id) {
+        <li>{{ medication.name }} ({{ medication.id }}) — {{ medication.inn }}</li>
+      }
+    </ul>
+
+    <h4>Naslov</h4>
+    <input class="input" type="text" [(ngModel)]="title" placeholder="Naslov" />
+
+    <h4>Opis</h4>
+    <textarea class="textarea" [(ngModel)]="description" placeholder="Kratak opis"></textarea>
+
+    <h4>{{ kind() === 'letter' ? 'PDF dokument' : 'Datoteke' }}</h4>
+    <input type="file" (change)="onFilesSelected($event)"
+           [accept]="kind() === 'letter' ? 'application/pdf' : '*'"
+           [multiple]="kind() === 'material'" />
+
+    @if (files.length > 0) {
+      <ul class="file-list">
+        @for (file of files; track file.name) {
+          <li>{{ file.name }}</li>
+        }
+      </ul>
+    }
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" (click)="closeForm()">Nazad</button>
+      <button class="btn btn-success" (click)="submit()" [disabled]="!canSubmit || saving()">
+        {{ saving() ? 'Čuvanje...' : 'Sačuvaj' }}
+      </button>
+    </div>
+  </app-modal>
+}

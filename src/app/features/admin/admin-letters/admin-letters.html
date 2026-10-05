@@ -1,0 +1,60 @@
+@if (creating()) {
+  <app-create-content kind="letter" [saving]="saving()"
+                      (cancelled)="cancelCreating()"
+                      (submitted)="saveLetter($event)" />
+} @else {
+
+  <div class="header">
+    <h2>Pisma</h2>
+    <button class="btn btn-success" (click)="startCreating()">Novo pismo</button>
+  </div>
+
+  @if (loading()) {
+    <p class="muted">Učitavanje...</p>
+  } @else if (letters().length === 0) {
+    <p class="empty-state">Još uvek nema objavljenih pisama.</p>
+  } @else {
+    <div class="card-grid">
+      @for (letter of letters(); track letter.id) {
+        <app-content-card [title]="letter.title" [createdAt]="letter.createdAt"
+                          (cardClick)="openDetails(letter)" />
+      }
+    </div>
+
+    <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
+                    (pageChange)="onPageChange($event)" />
+  }
+
+  @if (selectedLetter(); as letter) {
+    <app-modal [title]="letter.title" (closed)="closeDetails()">
+      <p class="muted">
+        Objavljeno {{ letter.createdAt | date:'dd.MM.yyyy.' }},
+        {{ letter.admin.firstName }} {{ letter.admin.lastName }}
+      </p>
+
+      @if (letter.description) {
+        <p class="description">{{ letter.description }}</p>
+      }
+
+      <h4>Lekovi na koje se odnosi</h4>
+      <ul class="medication-list">
+        @for (medication of letter.medications; track medication.id) {
+          <li>{{ medication.name }} ({{ medication.id }})</li>
+        }
+      </ul>
+
+      <p class="muted">Priloženi fajl: {{ letter.storedFile.originalFileName }}</p>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="closeDetails()">Zatvori</button>
+        <button class="btn btn-danger" (click)="deleteLetter(letter)" [disabled]="deleting()">
+          {{ deleting() ? 'Brisanje...' : 'Obriši pismo' }}
+        </button>
+      </div>
+    </app-modal>
+  }
+
+
+}
+
+

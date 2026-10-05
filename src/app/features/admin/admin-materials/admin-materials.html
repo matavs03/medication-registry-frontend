@@ -1,0 +1,62 @@
+@if (creating()) {
+  <app-create-content kind="material" [saving]="saving()"
+                      (cancelled)="cancelCreating()"
+                      (submitted)="saveMaterial($event)" />
+} @else {
+
+  <div class="header">
+    <h2>Edukativni materijali</h2>
+    <button class="btn btn-success" (click)="startCreating()">Novi materijal</button>
+  </div>
+
+  @if (loading()) {
+    <p class="muted">Učitavanje...</p>
+  } @else if (materials().length === 0) {
+    <p class="empty-state">Još uvek nema objavljenih materijala.</p>
+  } @else {
+    <div class="card-grid">
+      @for (material of materials(); track material.id) {
+        <app-content-card [title]="material.title" [createdAt]="material.createdAt"
+                          (cardClick)="openDetails(material)" />
+      }
+    </div>
+
+    <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
+                    (pageChange)="onPageChange($event)" />
+  }
+
+  @if (selectedMaterial(); as material) {
+    <app-modal [title]="material.title" (closed)="closeDetails()">
+      <p class="muted">
+        Objavljeno {{ material.createdAt | date:'dd.MM.yyyy.' }},
+        {{ material.admin.firstName }} {{ material.admin.lastName }}
+      </p>
+
+      @if (material.description) {
+        <p class="description">{{ material.description }}</p>
+      }
+
+      <h4>Lekovi na koje se odnosi</h4>
+      <ul class="medication-list">
+        @for (medication of material.medications; track medication.id) {
+          <li>{{ medication.name }} ({{ medication.id }})</li>
+        }
+      </ul>
+
+      <h4>Priloženi fajlovi</h4>
+      <ul class="medication-list">
+        @for (file of material.storedFiles; track file.id) {
+          <li>{{ file.originalFileName }}</li>
+        }
+      </ul>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="closeDetails()">Zatvori</button>
+        <button class="btn btn-danger" (click)="deleteMaterial(material)" [disabled]="deleting()">
+          {{ deleting() ? 'Brisanje...' : 'Obriši materijal' }}
+        </button>
+      </div>
+    </app-modal>
+  }
+
+}
