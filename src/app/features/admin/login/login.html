@@ -1,0 +1,23 @@
+<div class="login-wrapper">
+  <form class="login-box" (ngSubmit)="submit()">
+    <h2>Prijava administratora</h2>
+
+    <label>
+      Korisničko ime
+      <input class="input" type="text" name="username" [(ngModel)]="username" autocomplete="username" />
+    </label>
+
+    <label>
+      Lozinka
+      <input class="input" type="password" name="password" [(ngModel)]="password" autocomplete="current-password" />
+    </label>
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <button class="btn" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Prijavljivanje...' : 'Prijavi se' }}
+    </button>
+  </form>
+</div>
