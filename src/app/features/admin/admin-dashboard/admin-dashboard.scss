@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  padding: 20px 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.error {
+  color: var(--color-danger);
+}
+
+.message {
+  font-size: 0.9em;
+  max-width: 400px;
+}
