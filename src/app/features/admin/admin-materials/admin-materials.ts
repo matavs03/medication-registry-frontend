@@ -31,6 +31,8 @@ export class AdminMaterials {
   creating = signal(false);
   saving = signal(false);
 
+  error = signal('');
+
   constructor() {
     this.load();
   }
@@ -83,10 +85,12 @@ export class AdminMaterials {
   }
 
   startCreating() {
+    this.error.set('');
     this.creating.set(true);
   }
 
   cancelCreating() {
+    this.error.set('');
     this.creating.set(false);
   }
 
@@ -106,7 +110,10 @@ export class AdminMaterials {
         this.currentPage.set(0);
         this.load();
       },
-      error: () => this.saving.set(false),
+      error: (err) => {
+        this.saving.set(false);
+        this.error.set(err.error?.message ?? 'Čuvanje nije uspelo.');
+      },
     });
   }
 }

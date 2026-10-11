@@ -39,6 +39,9 @@ export class CreateContent {
   selectedIds = signal<string[]>([]);
 
   formOpen = signal(false);
+
+  error = input('');
+
   title = '';
   description = '';
   files: File[] = [];

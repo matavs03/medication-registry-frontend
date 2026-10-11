@@ -1,5 +1,5 @@
 @if (creating()) {
-  <app-create-content kind="material" [saving]="saving()"
+  <app-create-content kind="material" [saving]="saving()" [error]="error()"
                       (cancelled)="cancelCreating()"
                       (submitted)="saveMaterial($event)" />
 } @else {

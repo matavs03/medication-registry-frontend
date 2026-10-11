@@ -61,6 +61,10 @@
       </ul>
     }
 
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
     <div class="modal-actions">
       <button class="btn btn-ghost" (click)="closeForm()">Nazad</button>
       <button class="btn btn-success" (click)="submit()" [disabled]="!canSubmit || saving()">
