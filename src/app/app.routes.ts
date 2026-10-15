@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/auth-guard';
 import { AdminDashboard } from './features/admin/admin-dashboard/admin-dashboard';
 import { AdminLetters } from './features/admin/admin-letters/admin-letters';
 import { AdminMaterials } from './features/admin/admin-materials/admin-materials';
+import { AdminList } from './features/admin/admin-list/admin-list';
 
 export const routes: Routes = [
   { path: 'medications', component: MedicationList },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: 'admin/dashboard', component: AdminDashboard, canActivate: [authGuard] },
   { path: 'admin/letters', component: AdminLetters, canActivate: [authGuard] },
   { path: 'admin/materials', component: AdminMaterials, canActivate: [authGuard] },
+  { path: 'admin/admins', component: AdminList, canActivate: [authGuard] },
   { path: '**', redirectTo: 'medications' },
 ];

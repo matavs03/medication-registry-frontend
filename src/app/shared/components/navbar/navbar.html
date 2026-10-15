@@ -6,11 +6,23 @@
       <a routerLink="/admin/dashboard" routerLinkActive="active">Sinhronizacija</a>
       <a routerLink="/admin/letters" routerLinkActive="active">Pisma</a>
       <a routerLink="/admin/materials" routerLinkActive="active">Materijali</a>
+
+      @if (isSuperAdmin()) {
+        <a routerLink="/admin/admins" routerLinkActive="active">Administratori</a>
+      }
     </div>
 
     <div class="user-area">
-      <span class="muted">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
-      <button class="btn btn-ghost" (click)="logout()">Odjavi se</button>
+      <button class="user-button" (click)="toggleMenu()">
+        {{ currentUser.firstName }} {{ currentUser.lastName }} ▾
+      </button>
+
+      @if (menuOpen()) {
+        <div class="dropdown">
+          <button (click)="openPasswordDialog()">Promeni lozinku</button>
+          <button (click)="logout()">Odjavi se</button>
+        </div>
+      }
     </div>
   } @else {
     <div class="links">
@@ -20,3 +32,34 @@
     </div>
   }
 </nav>
+
+@if (passwordOpen()) {
+  <app-modal title="Promena lozinke" (closed)="closePasswordDialog()">
+    @if (success()) {
+      <p class="success">Lozinka je uspešno promenjena.</p>
+
+      <div class="modal-actions">
+        <button class="btn" (click)="closePasswordDialog()">Zatvori</button>
+      </div>
+    } @else {
+      <h4>Trenutna lozinka</h4>
+      <input class="input" type="password" [(ngModel)]="oldPassword"
+             autocomplete="current-password" />
+
+      <h4>Nova lozinka</h4>
+      <input class="input" type="password" [(ngModel)]="newPassword"
+             placeholder="Najmanje 6 karaktera" autocomplete="new-password" />
+
+      @if (error()) {
+        <p class="error">{{ error() }}</p>
+      }
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="closePasswordDialog()">Odustani</button>
+        <button class="btn" (click)="changePassword()" [disabled]="!canSubmit || saving()">
+          {{ saving() ? 'Čuvanje...' : 'Sačuvaj' }}
+        </button>
+      </div>
+    }
+  </app-modal>
+}

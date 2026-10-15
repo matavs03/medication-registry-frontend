@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  padding: 20px 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 10px 20px;
+  margin: 0 0 20px;
+
+  dt { font-weight: 600; color: var(--color-text-muted); }
+  dd { margin: 0; }
+}
+
+.error {
+  color: var(--color-danger);
+}

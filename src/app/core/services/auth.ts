@@ -46,4 +46,8 @@ export class AuthService {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? JSON.parse(raw) : null;
   }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    return this.http.put<void>(`${this.baseUrl}/password`, { oldPassword, newPassword });
+  }
 }

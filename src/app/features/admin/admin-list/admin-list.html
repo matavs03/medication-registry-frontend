@@ -1,0 +1,112 @@
+<div class="header">
+  <h2>Administratori</h2>
+  <button class="btn btn-success" (click)="startCreating()">Dodaj administratora</button>
+</div>
+
+@if (loading()) {
+  <p class="muted">Učitavanje...</p>
+} @else {
+  <table class="table selectable">
+    <thead>
+    <tr>
+      <th>Korisničko ime</th>
+      <th>Ime i prezime</th>
+      <th>Uloga</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (admin of admins(); track admin.id) {
+        <tr (click)="openDetails(admin)">
+          <td>{{ admin.username }}</td>
+          <td>{{ admin.firstName }} {{ admin.lastName }}</td>
+          <td>{{ admin.role === 'SUPER_ADMIN' ? 'Glavni administrator' : 'Administrator' }}</td>
+          <td>
+            <span class="badge" [class.badge-active]="admin.active"
+                  [class.badge-withdrawn]="!admin.active">
+              {{ admin.active ? 'Aktivan' : 'Deaktiviran' }}
+            </span>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
+                  (pageChange)="onPageChange($event)" />
+}
+
+@if (selected(); as admin) {
+  <app-modal [title]="admin.firstName + ' ' + admin.lastName" (closed)="closeDetails()">
+    <dl class="details">
+      <dt>Korisničko ime</dt>
+      <dd>{{ admin.username }}</dd>
+
+      <dt>Uloga</dt>
+      <dd>{{ admin.role === 'SUPER_ADMIN' ? 'Glavni administrator' : 'Administrator' }}</dd>
+
+      <dt>Status</dt>
+      <dd>{{ admin.active ? 'Aktivan' : 'Deaktiviran' }}</dd>
+    </dl>
+
+    @if (changingPassword()) {
+      <h4>Nova lozinka</h4>
+      <input class="input" type="password" [(ngModel)]="newPassword"
+             placeholder="Najmanje 6 karaktera" />
+    }
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <div class="modal-actions">
+      @if (changingPassword()) {
+        <button class="btn btn-ghost" (click)="changingPassword.set(false)">Nazad</button>
+        <button class="btn" (click)="resetPassword(admin)"
+                [disabled]="newPassword.length < 6 || saving()">
+          Sačuvaj lozinku
+        </button>
+      } @else {
+        <button class="btn btn-ghost" (click)="changingPassword.set(true)">Promeni lozinku</button>
+
+        @if (admin.active) {
+          <button class="btn btn-danger" (click)="toggleActive(admin)" [disabled]="saving()">
+            Deaktiviraj
+          </button>
+        } @else {
+          <button class="btn btn-success" (click)="toggleActive(admin)" [disabled]="saving()">
+            Aktiviraj
+          </button>
+        }
+      }
+    </div>
+  </app-modal>
+}
+
+@if (creating()) {
+  <app-modal title="Novi administrator" (closed)="closeCreating()">
+    <h4>Ime</h4>
+    <input class="input" type="text" [(ngModel)]="newAdmin.firstName" />
+
+    <h4>Prezime</h4>
+    <input class="input" type="text" [(ngModel)]="newAdmin.lastName" />
+
+    <h4>Korisničko ime</h4>
+    <input class="input" type="text" [(ngModel)]="newAdmin.username" autocomplete="off" />
+
+    <h4>Lozinka</h4>
+    <input class="input" type="password" [(ngModel)]="newAdmin.password"
+           placeholder="Najmanje 6 karaktera" autocomplete="new-password" />
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" (click)="closeCreating()">Odustani</button>
+      <button class="btn btn-success" (click)="createAdmin()" [disabled]="!canCreate || saving()">
+        {{ saving() ? 'Čuvanje...' : 'Sačuvaj' }}
+      </button>
+    </div>
+  </app-modal>
+}
