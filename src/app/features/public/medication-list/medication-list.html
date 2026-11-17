@@ -20,6 +20,10 @@
   <button class="btn btn-ghost" (click)="reset()">Poništi</button>
 </div>
 
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+
 @if (loading()) {
   <p class="muted">Učitavanje...</p>
 } @else {

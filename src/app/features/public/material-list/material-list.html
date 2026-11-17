@@ -11,9 +11,13 @@
   <button class="btn btn-ghost" (click)="reset()">Poništi</button>
 </div>
 
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+
 @if (loading()) {
   <p class="muted">Učitavanje...</p>
-} @else if (materials().length === 0) {
+} @else if (materials().length === 0 && !error()) {
   <p class="empty-state">Nema pronađenih materijala.</p>
 } @else {
   <div class="card-grid">
@@ -29,6 +33,10 @@
 
 @if (selectedMaterial(); as material) {
   <app-modal [title]="material.title" (closed)="closeDetails()">
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
     <p class="muted">
       Objavljeno {{ material.createdAt | date:'dd.MM.yyyy.' }},
       {{ material.admin.firstName }} {{ material.admin.lastName }}

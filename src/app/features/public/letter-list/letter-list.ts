@@ -20,12 +20,13 @@ export class LetterList {
   totalPages = signal(0);
   currentPage = signal(0);
   loading = signal(false);
+  error = signal<string | null>(null);
 
   selectedLetter = signal<LetterFullView | null>(null);
 
   criteria: LetterSearchCriteria = {
     title: '',
-    medicationName: ''
+    medicationName: '',
   };
 
   constructor() {
@@ -34,6 +35,7 @@ export class LetterList {
 
   load() {
     this.loading.set(true);
+    this.error.set(null);
 
     this.letterService.findAll(this.criteria, this.currentPage(), 12).subscribe({
       next: (page) => {
@@ -41,7 +43,10 @@ export class LetterList {
         this.totalPages.set(page.totalPages);
         this.loading.set(false);
       },
-      error: () => this.loading.set(false),
+      error: () => {
+        this.loading.set(false);
+        this.error.set('Došlo je do greške');
+      },
     });
   }
 
@@ -61,8 +66,11 @@ export class LetterList {
   }
 
   openDetails(letter: LetterShortView) {
+    this.error.set(null);
+
     this.letterService.findById(letter.id).subscribe({
       next: (full) => this.selectedLetter.set(full),
+      error: () => this.error.set('Došlo je do greške'),
     });
   }
 
@@ -71,6 +79,8 @@ export class LetterList {
   }
 
   download(letter: LetterFullView) {
+    this.error.set(null);
+
     this.letterService.downloadLetterFile(letter.id).subscribe({
       next: (response) => {
         const blob = response.body;
@@ -83,6 +93,7 @@ export class LetterList {
         link.click();
         URL.revokeObjectURL(url);
       },
+      error: () => this.error.set('Došlo je do greške'),
     });
   }
 }

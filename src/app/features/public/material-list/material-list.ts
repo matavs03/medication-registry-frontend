@@ -27,6 +27,7 @@ export class MaterialList {
   totalPages = signal(0);
   currentPage = signal(0);
   loading = signal(false);
+  error = signal<string | null>(null);
 
   selectedMaterial = signal<EducationalMaterialFullView | null>(null);
 
@@ -41,6 +42,7 @@ export class MaterialList {
 
   load() {
     this.loading.set(true);
+    this.error.set(null);
 
     this.materialService.findAll(this.criteria, this.currentPage(), 12).subscribe({
       next: (page) => {
@@ -48,7 +50,10 @@ export class MaterialList {
         this.totalPages.set(page.totalPages);
         this.loading.set(false);
       },
-      error: () => this.loading.set(false),
+      error: () => {
+        this.loading.set(false);
+        this.error.set('Došlo je do greške');
+      },
     });
   }
 
@@ -68,8 +73,11 @@ export class MaterialList {
   }
 
   openDetails(material: EducationalMaterialShortView) {
+    this.error.set(null);
+
     this.materialService.findById(material.id).subscribe({
       next: (full) => this.selectedMaterial.set(full),
+      error: () => this.error.set('Došlo je do greške'),
     });
   }
 
@@ -78,6 +86,8 @@ export class MaterialList {
   }
 
   download(materialId: string, file: StoredFileView) {
+    this.error.set(null);
+
     this.materialService.downloadEducationalMaterialFile(materialId, file.id).subscribe({
       next: (response) => {
         const blob = response.body;
@@ -90,6 +100,7 @@ export class MaterialList {
         link.click();
         URL.revokeObjectURL(url);
       },
+      error: () => this.error.set('Došlo je do greške'),
     });
   }
 

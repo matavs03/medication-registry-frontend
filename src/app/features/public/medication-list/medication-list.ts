@@ -20,6 +20,7 @@ export class MedicationList {
   totalPages = signal(0);
   currentPage = signal(0);
   loading = signal(false);
+  error = signal<string | null>(null);
 
   selectedMedication = signal<MedicationFullView | null>(null);
 
@@ -36,6 +37,7 @@ export class MedicationList {
 
   load() {
     this.loading.set(true);
+    this.error.set(null);
 
     this.medicationService.findAll(this.criteria, this.currentPage(), 20).subscribe({
       next: (page) => {
@@ -45,6 +47,7 @@ export class MedicationList {
       },
       error: () => {
         this.loading.set(false);
+        this.error.set('Došlo je do greške');
       },
     });
   }
@@ -65,8 +68,11 @@ export class MedicationList {
   }
 
   openDetails(medication: MedicationShortView) {
+    this.error.set(null);
+
     this.medicationService.findById(medication.id).subscribe({
       next: (full) => this.selectedMedication.set(full),
+      error: () => this.error.set('Došlo je do greške'),
     });
   }
 
